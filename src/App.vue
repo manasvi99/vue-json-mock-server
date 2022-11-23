@@ -1,15 +1,43 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <FetchData/>
+  <table>
+    <tr>
+      <td>firstname</td>
+      <td>lastname</td>
+    </tr>
+    <tr>
+      <td>{{employee.fname}}</td>
+      <td>{{employee.lname}}</td>
+    </tr>
+  </table>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FetchData from './components/FetchData.vue'
 
+import axios from 'axios'
+//import emplyeejson from './employee.json'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    FetchData
+  },
+  data(){
+    return{
+      employee:{}
+    }
+  },
+   mounted() {
+    axios.get('http://localhost:3002/api/employee').then((response)=>{
+      //console.log(response.data);
+      this.employee=response.data;
+    }
+    ).catch((error)=>{
+      console.log("error" +error);
+    }).finally(()=>{
+      console.log("always execute");
+    });
   }
 }
 </script>
